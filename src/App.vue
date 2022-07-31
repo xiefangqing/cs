@@ -3,11 +3,11 @@
     <nav>
       <router-link to="/c1">TopicNav</router-link> |
       <router-link to="/c2">TopicSearch</router-link> |
-      <router-link to="/c3">c3</router-link> |
-      <router-link to="/c4">c4</router-link> |
-      <router-link to="/c5">c5</router-link> |
-      <router-link to="/c6">c6</router-link> |
-      <router-link to="/c7">c7</router-link> |
+      <router-link to="/c3">C3</router-link> |
+      <router-link to="/c4">C4</router-link> |
+      <router-link to="/c5">C5</router-link> |
+      <router-link to="/c6">C6</router-link> |
+      <router-link to="/c7">C7</router-link> |
     </nav>
     <router-view />
   </div>

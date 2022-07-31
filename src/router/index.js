@@ -11,37 +11,37 @@ const routes = [
   {
     path: '/c1',
     name: 'c1',
-    component: () => import('../views/c1.vue')
+    component: () => import('../views/C1.vue')
   },
   {
     path: '/c2',
     name: 'c2',
-    component: () => import('../views/c2.vue')
+    component: () => import('../views/C2.vue')
   },
   {
     path: '/c3',
     name: 'c3',
-    component: () => import('../views/c3.vue')
+    component: () => import('../views/C3.vue')
   },
   {
     path: '/c4',
     name: 'c4',
-    component: () => import('../views/c4.vue')
+    component: () => import('../views/C4.vue')
   },
   {
     path: '/c5',
     name: 'c5',
-    component: () => import('../views/c5.vue')
+    component: () => import('../views/C5.vue')
   },
   {
     path: '/c6',
     name: 'c6',
-    component: () => import('../views/c6.vue')
+    component: () => import('../views/C6.vue')
   },
   {
     path: '/c7',
     name: 'c7',
-    component: () => import('../views/c7.vue')
+    component: () => import('../views/C7.vue')
   },
 ]
 
