@@ -1,67 +1,67 @@
 <template>
   <div class="topic-search">
     <div class="btn-group">
-      <button :class="{'active': isActive}">试题</button>
-      <button>试卷</button>
+      <button @click="switchTopic" :class="{ active: isActive }">试题</button>
+      <button @click="switchPaper">试卷</button>
     </div>
-    <input class="search-input">
-    <div class="search-addon"></div>
+    <input type="text" placeholder="请输入试题/知识点关键字" />
+    <div class="icon"></div>
   </div>
 </template>
 
 <script>
 export default {
-  name: "TopicSearch",
+  name: 'TopicSearch',
   data() {
     return {
       isActive: true
     };
   },
+  methods: {
+    switchTopic() {
+      
+    }
+  }
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .topic-search {
   display: flex;
   width: 420px;
   height: 32px;
-  border: 1px solid #E8E8E8;
+  border: 1px solid #e8e8e8;
   border-radius: 6px;
   overflow: hidden;
-}
 
-.btn-group {
-  height: 100%;
-}
+  .btn-group > button {
+    width: 60px;
+    height: 100%;
+    border-right: 1px solid #dcdfe6;
+    cursor: pointer;
 
-.btn-group > button {
-  width: 60px;
-  height: 100%;
-  cursor: pointer;
-  border: none;
-  border-right: 1px solid #DCDFE6;
-  background-color: #fff;
-}
+    &.active {
+      background: #e6f1fc;
+      border-radius: 6px 0px 0px 6px;
+      border: 1px solid #00a0e9;
+    }
+  }
 
-.btn-group > button.active {
-  background: #E6F1FC;
-  border: 1px solid #00A0E9;
-  border-radius: 6px 0 0 6px;
-}
+  > input {
+    width: 0; /* 为了让兄弟元素的width能够撑开 */
+    flex: 1;
+    border-color: transparent;
+    padding: 4px;
+    border: none;
+  }
 
-.search-input {
-  width: 0;  /* 为了让兄弟元素的width能够撑开 */
-  flex: 1;
-  border-color: transparent;
-  padding: 4px;
-  border: none;
-}
-
-.search-addon {
-  width: 38px;
-  background: #00A0E9;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  .icon {
+    cursor: pointer;
+    width: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #00a0e9 url('../assets/sousuo.png') no-repeat center;
+  }
 }
 </style>

@@ -3,7 +3,7 @@
     <nav>
       <router-link to="/c1">TopicNav</router-link> |
       <router-link to="/c2">TopicSearch</router-link> |
-      <router-link to="/c3">C3</router-link> |
+      <router-link to="/c3">TopicPreview</router-link> |
       <router-link to="/c4">C4</router-link> |
       <router-link to="/c5">C5</router-link> |
       <router-link to="/c6">C6</router-link> |
@@ -14,6 +14,17 @@
 </template>
 
 <style lang="scss">
+// https://css-tricks.com/inheriting-box-sizing-probably-slightly-better-best-practice/
+// html {
+//   box-sizing: border-box;
+// }
+
+// *,
+// *:before,
+// *:after {
+//   box-sizing: inherit;
+// }
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

@@ -1,5 +1,16 @@
 <template>
   <div class="c2">
-    <h1>题目搜索</h1>
+    <topic-search />
   </div>
 </template>
+
+<script>
+import TopicSearch from '@/components/TopicSearch.vue';
+
+export default {
+  name: 'C2',
+  components: {
+    TopicSearch
+  }
+};
+</script>
