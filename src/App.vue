@@ -5,7 +5,7 @@
       <router-link to="/c2">TopicSearch</router-link> |
       <router-link to="/c3">TopicPreview</router-link> |
       <router-link to="/c4">TopicCard</router-link> |
-      <router-link to="/c5">C5</router-link> |
+      <router-link to="/c5">PaperCard</router-link> |
       <router-link to="/c6">C6</router-link> |
       <router-link to="/c7">C7</router-link> |
     </nav>

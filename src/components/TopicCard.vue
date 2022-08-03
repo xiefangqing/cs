@@ -55,6 +55,9 @@
         <el-button v-if="showEdit" type="text" @click="clickEdit"
           >编辑</el-button
         >
+        <el-button v-if="showDelete" type="text" @click="clickDelete"
+          >删除</el-button
+        >
         <el-button v-if="showShare" type="text" @click="clickShare">{{
           isShare ? '已分享' : '分享'
         }}</el-button>
@@ -78,11 +81,11 @@
           >改编</el-button
         >
         <el-button
-          class="delete"
-          v-if="showDelete"
+          class="remove"
+          v-if="showRemove"
           type="text"
-          @click="clickDelete"
-          >删除</el-button
+          @click="clickRemove"
+          >移出</el-button
         >
         <el-button v-if="showReplace" type="primary" @click="clickBasket"
           >更换</el-button
@@ -132,10 +135,10 @@ export default {
     btns: {
       type: Array,
       default() {
-        // 按钮绑定值约定：（在组卷页，换题按钮只是相似题按钮的别名，更换按钮只是试题篮按钮的别名）
-        // 所有：收藏（f）、相似题（s）、答案解析（a）、试题篮（b）、换题（c）、更换（r）、改编（w）、移出（d）、编辑（e）、分享（x）
+        // 按钮绑定值约定：
+        // 所有：收藏（f）、相似题（s）、答案解析（a）、试题篮（b）、换题（c）、更换（r）、改编（w）、移出（m）、编辑（e）、分享（x）、删除（d）
         // 选题：['f', 's', 'a', 'b']
-        // 组卷：['f', 'c', 'a', 'w', 'd']
+        // 组卷：['f', 'c', 'a', 'w', 'm']（在组卷页，换题按钮只是相似题按钮的别名）
         // 我的资源：['e','d','x','f', 's', 'a', 'b']
         return ['f', 's', 'a', 'b'];
       }
@@ -152,6 +155,7 @@ export default {
       showRewrite: this.btns.includes('w'),
       showChangeQuestions: this.btns.includes('c'),
       showReplace: this.btns.includes('r'),
+      showRemove: this.btns.includes('m'),
       showDelete: this.btns.includes('d'),
       showEdit: this.btns.includes('e'),
       showShare: this.btns.includes('x'),
@@ -187,13 +191,17 @@ export default {
     clickRewrite() {
       this.$emit('open-rewrite', this.data);
     },
-    // 点击删除
-    clickDelete() {
-      this.$emit('delete', this.data);
+    // 点击移出
+    clickRemove() {
+      this.$emit('remove', this.data);
     },
     // 点击编辑
     clickEdit() {
       this.$emit('open-edit', this.data);
+    },
+    // 点击删除
+    clickDelete() {
+      this.$emit('delete', this.data);
     },
     // 点击分享
     clickShare() {
@@ -298,7 +306,7 @@ export default {
         color: #00a0e9;
       }
 
-      &.delete {
+      &.remove {
         color: #ff5353;
       }
 

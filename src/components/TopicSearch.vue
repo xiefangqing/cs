@@ -1,11 +1,16 @@
 <template>
   <div class="topic-search">
-    <div class="btn-group">
-      <button @click="switchTopic" :class="{ active: isActive }">试题</button>
-      <button @click="switchPaper">试卷</button>
-    </div>
-    <input type="text" placeholder="请输入试题/知识点关键字" />
-    <div class="icon"></div>
+    <el-radio-group v-model="searchRange" text-color="#00a0e9" fill="#e6f1fc">
+      <el-radio-button label="试题"></el-radio-button>
+      <el-radio-button label="试卷"></el-radio-button>
+    </el-radio-group>
+    <el-input v-model="searchVal" :placeholder="placeholderText">
+      <el-button
+        @click="search"
+        slot="append"
+        icon="el-icon-search"
+      ></el-button>
+    </el-input>
   </div>
 </template>
 
@@ -14,12 +19,23 @@ export default {
   name: 'TopicSearch',
   data() {
     return {
-      isActive: true
+      searchRange: '试题',
+      searchVal: ''
     };
   },
+  computed: {
+    placeholderText() {
+      return this.searchRange === '试题'
+        ? '请输入试题/知识点关键字'
+        : '请输入试卷名称';
+    }
+  },
   methods: {
-    switchTopic() {
-      
+    search() {
+      this.$emit('search', {
+        searchRange: this.searchRange,
+        searchVal: this.searchVal
+      });
     }
   }
 };
@@ -30,38 +46,59 @@ export default {
   display: flex;
   width: 420px;
   height: 32px;
-  border: 1px solid #e8e8e8;
-  border-radius: 6px;
-  overflow: hidden;
+  font-size: 14px;
 
-  .btn-group > button {
-    width: 60px;
-    height: 100%;
-    border-right: 1px solid #dcdfe6;
-    cursor: pointer;
+  ::v-deep() {
+    .el-radio-group {
+      display: flex;
 
-    &.active {
-      background: #e6f1fc;
-      border-radius: 6px 0px 0px 6px;
-      border: 1px solid #00a0e9;
+      .el-radio-button {
+        box-shadow: none !important;
+      }
+
+      .el-radio-button__inner {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        border: 1px solid #e8e8e8;
+        color: #666;
+        border-radius: 0;
+      }
+
+      .el-radio-button.is-active .el-radio-button__inner {
+        border: 1px solid #00a0e9 !important;
+      }
+
+      .el-radio-button:first-of-type .el-radio-button__inner {
+        border-radius: 6px 0 0 6px;
+      }
     }
-  }
 
-  > input {
-    width: 0; /* 为了让兄弟元素的width能够撑开 */
-    flex: 1;
-    border-color: transparent;
-    padding: 4px;
-    border: none;
-  }
+    .el-input {
+      height: 100%;
 
-  .icon {
-    cursor: pointer;
-    width: 38px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #00a0e9 url('../assets/sousuo.png') no-repeat center;
+      &__inner {
+        height: 100%;
+        border: 1px solid #e8e8e8;
+        border-radius: 0;
+        border-left: 0;
+      }
+
+      .el-input-group__append {
+        border: 1px solid #e8e8e8;
+        border-left: 0;
+        background: #00a0e9;
+        color: white;
+        border-radius: 0 6px 6px 0;
+
+        > button {
+          width: 38px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+      }
+    }
   }
 }
 </style>

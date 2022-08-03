@@ -1,6 +1,6 @@
 <template>
   <div class="c2">
-    <topic-search />
+    <topic-search @search="search" />
   </div>
 </template>
 
@@ -11,6 +11,11 @@ export default {
   name: 'C2',
   components: {
     TopicSearch
+  },
+  methods: {
+    search(info) {
+      console.log(info);
+    }
   }
 };
 </script>

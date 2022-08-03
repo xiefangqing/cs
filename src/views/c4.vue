@@ -5,12 +5,13 @@
       :key="item.id"
       :data="item"
       :idx="index + 1"
-      :btns="['e', 'd', 'x', 'f', 's', 'a', 'b']"
+      :btns="['e','d','x','f', 's', 'a', 'b']"
       @open-similar="openSimilar"
       @open-basket="openBasket"
       @open-rewrite="openRewrite"
       @open-edit="openEdit"
-      @delete="removeTopic"
+      @remove="removeTopic"
+      @delete="deleteTopic"
     ></topic-card>
   </div>
 </template>
@@ -41,7 +42,7 @@ export default {
           my_resources: true,
           answer: ['B'],
           hint: '解析',
-          update_time: '2022-7-31',
+          update_time: '2022-8-2',
           points: [
             { id: 1, name: '用科学计数法表示绝对值大于10的数' },
             { id: 2, name: '实际问题与一元二次方程' },
@@ -84,7 +85,10 @@ export default {
       console.log('打开改编页面', topic);
     },
     removeTopic(topic) {
-      console.log('将选中的试题移出当前试卷');
+      console.log('将选中的试题移出当前试卷', topic);
+    },
+    deleteTopic(topic) {
+      console.log('删除试题', topic);
     },
     openEdit(topic) {
       console.log('打开试题编辑页面', topic);
