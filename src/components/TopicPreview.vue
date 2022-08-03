@@ -73,13 +73,19 @@ export default {
     data: Object,
     show: Boolean
   },
-  computed: {
-    dialogVisible() {
-      return this.show;
+  data() {
+    return {
+      dialogVisible: this.show
+    };
+  },
+  watch: {
+    show(newVal) {
+      this.dialogVisible = newVal;
     }
   },
   methods: {
     closeDialog() {
+      this.dialogVisible = false;
       this.$emit('update:show', false);
     },
     getAnswer(answers) {
@@ -87,7 +93,7 @@ export default {
       const { answer_type, answer_res } = answers[0];
       // 1单选 2多选 3判断 4填空 5解答
       if (answer_type === 3) {
-        return answer_res === 1 ? 'T' : 'F';
+        return answer_res[0] === '1' ? '√' : 'X';
       } else if ([4, 5].includes(answer_type)) {
         return `答案：${answer_res[0]}`;
       } else {
