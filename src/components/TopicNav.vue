@@ -55,11 +55,11 @@ export default {
       topicList: this.list,
       dragOptions: {
         // 类名在拖动过程中添加
-        dragClass: 'dragging',
+        dragClass: 'topic-dragging',
         // 动画时间
-        animation: 150,
+        animation: 200,
         // 缓动函数
-        // easing: ''
+        easing: 'ease-in-out'
       }
     };
   },
@@ -93,13 +93,37 @@ export default {
       index += childIndex;
       return index;
     },
-    // 数字转汉字（TODO：移到公共）
+    // 数字转汉字（TODO: 移到公共）
     toChineseNumber(n) {
       if (!Number.isInteger(n) && n < 0) {
         throw Error('请输入自然数');
       }
-      const digits = [ '零', '一', '二', '三', '四', '五', '六', '七', '八', '九' ];
-      const positions = [ '', '十', '百', '千', '万', '十万', '百万', '千万', '亿', '十亿', '百亿', '千亿' ];
+      const digits = [
+        '零',
+        '一',
+        '二',
+        '三',
+        '四',
+        '五',
+        '六',
+        '七',
+        '八',
+        '九'
+      ];
+      const positions = [
+        '',
+        '十',
+        '百',
+        '千',
+        '万',
+        '十万',
+        '百万',
+        '千万',
+        '亿',
+        '十亿',
+        '百亿',
+        '千亿'
+      ];
       const charArray = String(n).split('');
       let result = '';
       let prevIsZero = false;
@@ -120,15 +144,19 @@ export default {
         result = result.replace('一十', '十');
       }
       return result;
-      // return '零一二三四五六七八九'.charAt(num);
     }
   }
 };
 </script>
 
 <style lang="scss" scoped>
+$--title-color: #333;
+$--number-color: #666;
+$--number-border-color: #e8e8e8;
+$--number-hover-color: rgba(45, 115, 245, 0.08);
+$--topic-dragging-color: blue;
+
 .topic {
-  width: 250px; // 这行到时候删
   font-size: 14px;
   user-select: none;
 
@@ -137,8 +165,7 @@ export default {
   }
 
   &-title {
-    line-height: 20px;
-    color: #333;
+    color: $--title-color;
     padding-bottom: 16px;
   }
 
@@ -152,25 +179,25 @@ export default {
     flex-shrink: 0;
     width: 32px;
     height: 32px;
-    line-height: 32px;
+    line-height: calc(32px - 1px * 2);
     text-align: center;
-    color: #666;
+    color: $--number-color;
     border-radius: 4px;
-    border: 1px solid #e8e8e8;
+    border: 1px solid $--number-border-color;
     cursor: pointer;
 
     &:hover {
-      background-color: rgba(45, 115, 245, 0.08);
+      background-color: $--number-hover-color;
     }
+  }
+
+  // 拖动中样式
+  &-dragging {
+    border: 1px dashed $--topic-dragging-color;
   }
 }
 
-// 拖动中样式
-.dragging {
-  border: 1px dashed blue;
-}
-
-// 过渡效果
+// 展开收起过渡效果
 .collapse-transition {
   transition: all 0.3s ease-in-out;
 }

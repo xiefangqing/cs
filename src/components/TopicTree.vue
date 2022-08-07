@@ -399,7 +399,7 @@
 
 <script>
 export default {
-  name: 'SubtopicTree',
+  name: 'TopicTree',
   data() {
     return {
       topics: {

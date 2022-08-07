@@ -29,13 +29,11 @@ export default {
     const data = [
       {
         name: '单选题',
-        nodes: [{ id: id++ }, { id: id++ }, { id: id++ }],
-        isActive: true
+        nodes: [{ id: id++ }, { id: id++ }, { id: id++ }]
       },
       {
         name: '填空题',
-        nodes: [{ id: id++ }, { id: id++ }],
-        isActive: true
+        nodes: [{ id: id++ }, { id: id++ }]
       }
     ];
     // 处理数据

@@ -1,20 +1,20 @@
 <template>
   <div class="c6">
-    <t-cascader
+    <topic-cascader
       v-model="value"
       :options="options"
       @change="handleChange"
-    ></t-cascader>
+    ></topic-cascader>
   </div>
 </template>
 
 <script>
-import TCascader from '@/components/TCascader.vue';
+import TopicCascader from '@/components/TopicCascader.vue';
 
 export default {
   name: 'C6',
   components: {
-    TCascader
+    TopicCascader
   },
   data() {
     return {

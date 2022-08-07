@@ -2,19 +2,18 @@
   <div id="app">
     <nav>
       <router-link to="/c1">TopicNav</router-link> |
-      <router-link to="/c2">TopicSearch</router-link> |
+      <router-link to="/c2">HomeSearch</router-link> |
       <router-link to="/c3">TopicPreview</router-link> |
       <router-link to="/c4">TopicCard</router-link> |
       <router-link to="/c5">PaperCard</router-link> |
-      <router-link to="/c6">TCascader</router-link> |
-      <router-link to="/c7">SubtopicTree</router-link> |
+      <router-link to="/c6">TopicCascader</router-link> |
+      <router-link to="/c7">TopicTree</router-link> |
     </nav>
     <router-view />
   </div>
 </template>
 
 <style lang="scss">
-// https://css-tricks.com/inheriting-box-sizing-probably-slightly-better-best-practice/
 html {
   box-sizing: border-box;
 }

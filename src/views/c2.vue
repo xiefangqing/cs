@@ -1,16 +1,16 @@
 <template>
   <div class="c2">
-    <topic-search @search="search" />
+    <home-search @search="search" />
   </div>
 </template>
 
 <script>
-import TopicSearch from '@/components/TopicSearch.vue';
+import HomeSearch from '@/components/HomeSearch.vue';
 
 export default {
   name: 'C2',
   components: {
-    TopicSearch
+    HomeSearch
   },
   methods: {
     search(info) {
