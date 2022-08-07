@@ -4,6 +4,7 @@
       v-for="item in cardData"
       :key="item.id"
       :data="item"
+      :btns="['t', 'c', 'e', 's', 'a', 'd', 'f']"
     ></paper-card>
   </div>
 </template>
@@ -32,7 +33,8 @@ export default {
           download_num: 9284,
           my_resources: true,
           shared: true,
-          fav: true
+          fav: true,
+          is_not_analysis: true
         },
         {
           id: 222,
@@ -47,7 +49,8 @@ export default {
           download_num: 6666,
           my_resources: true,
           shared: false,
-          fav: false
+          fav: false,
+          is_not_analysis: false
         }
       ]
     };
