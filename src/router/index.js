@@ -1,7 +1,7 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
+import Vue from 'vue';
+import VueRouter from 'vue-router';
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 const routes = [
   {
@@ -43,12 +43,27 @@ const routes = [
     name: 'c7',
     component: () => import('../views/C7.vue')
   },
-]
+  {
+    path: '/c8',
+    name: 'c8',
+    component: () => import('../views/C8.vue')
+  },
+  {
+    path: '/c9',
+    name: 'c9',
+    component: () => import('../views/C9.vue')
+  },
+  {
+    path: '/c10',
+    name: 'c10',
+    component: () => import('../views/C10.vue')
+  }
+];
 
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
-})
+});
 
-export default router
+export default router;
