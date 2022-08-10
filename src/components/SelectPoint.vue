@@ -303,6 +303,7 @@ export default {
         flex: 1;
       }
       .left {
+        flex: 0 0 440px;
         padding: 24px 20px;
         border-right: 1px solid #cecece;
         .title {

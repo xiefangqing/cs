@@ -33,7 +33,7 @@
       >
         <div class="tree-node">
           <div class="label">
-            <i class="el-icon-folder-opened"></i>
+            <i :class="isFav ? 'el-icon-folder-opened' : 'el-icon-share'"></i>
             <div v-if="!data.isEdit">{{ node.label }}</div>
             <el-input
               v-else
@@ -45,7 +45,10 @@
           </div>
           <div class="icon-group" v-if="isFav">
             <i class="el-icon-rank"></i>
-            <i class="el-icon-edit" :class="{ active: data.isEdit }" @click="edit(data)"></i>
+            <i
+              :class="['el-icon-edit', { active: data.isEdit }]"
+              @click="edit(data)"
+            ></i>
             <i class="el-icon-circle-plus-outline" @click="append(data)"></i>
             <i class="el-icon-remove-outline" @click="remove(node, data)"></i>
           </div>
@@ -212,7 +215,9 @@ export default {
     limitSelectNumber(data, status) {
       // 限制最多选择10个文件夹
       if (status.checkedKeys.length > 10) {
-        this.$refs.tree.setCheckedKeys(status.checkedKeys.filter(t => t !== data.id));
+        this.$refs.tree.setCheckedKeys(
+          status.checkedKeys.filter(t => t !== data.id)
+        );
         this.$message({
           type: 'error',
           message: '最多只能选择10个文件夹！'
