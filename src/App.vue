@@ -9,7 +9,7 @@
       <router-link to="/c6">TopicCascader</router-link> |
       <router-link to="/c7">TopicTree</router-link> |
       <router-link to="/c8">TopicFav</router-link> |
-      <router-link to="/c9">C9</router-link> |
+      <router-link to="/c9">SelectPoint</router-link> |
       <router-link to="/c10">C10</router-link> |
     </nav>
     <router-view />

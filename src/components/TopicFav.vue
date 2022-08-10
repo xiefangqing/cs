@@ -38,8 +38,8 @@
             <el-input
               v-else
               v-model.trim="data.label"
-              @change="data.isEdit = false"
-              @blur="data.isEdit = false"
+              @blur="updateLabel(data)"
+              @keyup.enter.native="updateLabel(data)"
               ref="editInput"
             ></el-input>
           </div>
@@ -192,15 +192,21 @@ export default {
       // const index = children.findIndex(d => d.id === data.id);
       // children.splice(index, 1);
     },
-    // 编辑文件夹名称
+    // 转变文件夹名称为input
     edit(data) {
       if (data.label === '默认收藏夹') return;
       this.$set(data, 'isEdit', true);
       this.$nextTick(() => {
         this.$refs.editInput.focus();
         // this.$refs.editInput.select();
-        console.log('更新文件夹名称！');
       });
+      data.historyName = data.label;
+    },
+    // 更新文件夹名称
+    updateLabel(data) {
+      data.isEdit = false;
+      if (data.label === data.historyName) return;
+      console.log('更新文件夹名称！');
     },
     // 当复选框被点击的时候触发
     limitSelectNumber(data, status) {
@@ -306,6 +312,10 @@ export default {
       &-node__expand-icon {
         color: #999;
         font-size: 14px;
+        &.is-leaf {
+          color: transparent;
+          cursor: default;
+        }
         &.expanded {
           transform: rotate(180deg);
         }
