@@ -27,7 +27,7 @@ export default {
           position: '平阳',
           type: '期中考试',
           topic_num: 30,
-          update_time: '2022-8-2',
+          update_time: '2022-8-11',
           paper_name: '全国统一大卷',
           level: '中等',
           download_num: 9284,

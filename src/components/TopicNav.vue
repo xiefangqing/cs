@@ -6,27 +6,35 @@
     @end="topicDragEnd"
   >
     <div class="topic-item" v-for="(item, index) in topicList" :key="item.id">
-      <div class="topic-title" @click="toggleNavDisplay(item)">
-        {{ toChineseNumber(index + 1) }}、{{ item.name }}
+      <div class="topic-title" @dblclick="editTitle(item)">
+        {{ toChineseNumber(index + 1) }}、
+        <span v-if="!item.isEdit">{{ item.name }}</span>
+        <el-input
+          v-else
+          v-model="item.name"
+          @blur="item.isEdit = false"
+          @keydown.native.enter="item.isEdit = false"
+          ref="inp"
+        ></el-input>
       </div>
-      <el-collapse-transition>
-        <draggable
-          class="topic-nav"
-          v-show="item.isActive"
-          v-model="item.nodes"
-          v-bind="dragOptions"
-          @end="nodeDragEnd"
+      <!-- <el-collapse-transition> -->
+      <draggable
+        class="topic-nav"
+        v-show="item.isActive"
+        v-model="item.nodes"
+        v-bind="dragOptions"
+        @end="nodeDragEnd"
+      >
+        <span
+          class="nav-number"
+          v-for="(item2, index2) in item.nodes"
+          :key="item2.id"
+          @click="handleNumClick(item2)"
         >
-          <span
-            class="nav-number"
-            v-for="(item2, index2) in item.nodes"
-            :key="item2.id"
-            @click="handleNumClick(item2)"
-          >
-            {{ getIndex(index, index2) }}
-          </span>
-        </draggable>
-      </el-collapse-transition>
+          {{ getIndex(index, index2) }}
+        </span>
+      </draggable>
+      <!-- </el-collapse-transition> -->
     </div>
   </draggable>
 </template>
@@ -70,9 +78,16 @@ export default {
     }
   },
   methods: {
-    toggleNavDisplay(item) {
-      item.isActive = !item.isActive;
+    // 编辑标题
+    editTitle(item) {
+      this.$set(item, 'isEdit', true);
+      this.$nextTick(() => {
+        this.$refs.inp[0].focus();
+      });
     },
+    // toggleNavDisplay(item) {
+    //   item.isActive = !item.isActive;
+    // },
     // 点击数字导航
     handleNumClick(item) {
       this.$emit('nav', item);
@@ -99,8 +114,32 @@ export default {
       if (!Number.isInteger(n) && n < 0) {
         throw Error('请输入自然数');
       }
-      const digits = [ '零', '一', '二', '三', '四', '五', '六', '七', '八', '九' ];
-      const positions = [ '', '十', '百', '千', '万', '十万', '百万', '千万', '亿', '十亿', '百亿', '千亿' ];
+      const digits = [
+        '零',
+        '一',
+        '二',
+        '三',
+        '四',
+        '五',
+        '六',
+        '七',
+        '八',
+        '九'
+      ];
+      const positions = [
+        '',
+        '十',
+        '百',
+        '千',
+        '万',
+        '十万',
+        '百万',
+        '千万',
+        '亿',
+        '十亿',
+        '百亿',
+        '千亿'
+      ];
       const charArray = String(n).split('');
       let result = '';
       let prevIsZero = false;
@@ -126,7 +165,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 $--title-color: #333;
 $--number-color: #666;
 $--number-border-color: #e8e8e8;
@@ -143,8 +182,12 @@ $--topic-dragging-color: blue;
   }
 
   &-title {
+    display: flex;
     color: $--title-color;
     padding-bottom: 16px;
+    .el-input__inner {
+      height: 32px;
+    }
   }
 
   &-nav {
@@ -176,7 +219,7 @@ $--topic-dragging-color: blue;
 }
 
 // 展开收起过渡效果
-.collapse-transition {
-  transition: all 0.3s ease-in-out;
-}
+// .collapse-transition {
+//   transition: all 0.3s ease-in-out;
+// }
 </style>

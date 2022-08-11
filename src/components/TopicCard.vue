@@ -1,36 +1,36 @@
 <template>
   <el-card class="topic-card">
     <div v-if="showNewFlag" class="new">New</div>
-    <div slot="header" class="header">
-      <div class="order">{{ idx }}.</div>
-      <div class="topic">
-        <div class="title">
-          <div class="attr">
-            <span>{{ data.type }}</span>
-            <el-divider direction="vertical"></el-divider>
-            <span>{{ data.difficulty }}</span>
-            <el-divider direction="vertical"></el-divider>
-            <span>{{ data.score }}</span>
-            <el-divider direction="vertical"></el-divider>
-            <span>{{ data.groupNum }}</span>
-            <el-divider direction="vertical"></el-divider>
-            <span
-              >{{ data.year }} . {{ data.position }} .
-              {{ data.paperName }}</span
-            >
-            <el-divider direction="vertical"></el-divider>
-            <span>{{ data.value }}分</span>
+    <template #header>
+      <div class="header" @click="isAnaly = !isAnaly">
+        <div class="order">{{ idx }}.</div>
+        <div class="topic">
+          <div class="title">
+            <div class="attr">
+              <span>{{ data.type }}</span>
+              <el-divider direction="vertical"></el-divider>
+              <span>{{ data.difficulty }}</span>
+              <el-divider direction="vertical"></el-divider>
+              <span>{{ data.score }}</span>
+              <el-divider direction="vertical"></el-divider>
+              <span>{{ data.groupNum }}</span>
+              <el-divider direction="vertical"></el-divider>
+              <span
+                >{{ data.year }} . {{ data.position }} .
+                {{ data.paperName }}</span
+              >
+              <el-divider direction="vertical"></el-divider>
+              <span>{{ data.value }}分</span>
+            </div>
+            <div class="status">
+              <el-tag v-if="data.shared">已分享</el-tag>
+              <el-tag v-if="data.my_resources" type="success">我的资源</el-tag>
+            </div>
           </div>
-          <div class="status">
-            <el-tag v-if="data.shared">已分享</el-tag>
-            <el-tag v-if="data.my_resources" type="success">我的资源</el-tag>
-          </div>
-        </div>
-        <div class="content">
-          2021年5月18日上午，江苏省人民政府召开新闻发布会，公布了全省最新人口数据，其中连云港市的常住人口约为人，把“”用科学记数法表示为
+          <div class="content" v-html="data.content"></div>
         </div>
       </div>
-    </div>
+    </template>
     <div class="footer">
       <div class="points">
         <template v-if="data.points.length <= 3">
@@ -102,13 +102,11 @@
     <div class="analy" v-show="isAnaly">
       <div>
         <span class="label">答　案</span>
-        <span>C</span>
+        <span v-html="getAnswer"></span>
       </div>
       <div>
         <span class="label">解　析</span>
-        <span
-          >用科学记数法表示较大的数时，一般形式为，其中，为整数，且比原来的整数位数少，据此判断即可</span
-        >
+        <span v-html="data.hint"></span>
       </div>
       <div class="points">
         <span class="label">知识点</span>
@@ -121,13 +119,19 @@
         <span>{{ data.id }}</span>
       </div>
     </div>
+    <topic-fav v-model="showFavDialog"></topic-fav>
   </el-card>
 </template>
 
 <script>
-// 题目内容、答案、解析都是富文本
+// TODO: 图标；按钮循环出来，数据外面传进
+import TopicFav from '@/components/TopicFav.vue';
+
 export default {
   name: 'TopicCard',
+  components: {
+    TopicFav
+  },
   props: {
     // 题目数据
     data: Object,
@@ -162,7 +166,8 @@ export default {
       isFav: this.data.fav,
       isAnaly: false,
       isShare: this.data.shared,
-      isBasket: false
+      isBasket: false,
+      showFavDialog: false
     };
   },
   computed: {
@@ -170,13 +175,21 @@ export default {
     showNewFlag() {
       const [y, m, d] = this.data.update_time.split('-');
       return new Date(+y, m - 1, +d + 3) > new Date();
+    },
+    // 根据答案类型返回
+    getAnswer() {
+      return this.data.answer.join(',');
     }
   },
   methods: {
     // 点击收藏按钮
     clickFav() {
-      this.isFav = true;
-      console.log('唤出收藏弹窗');
+      if (this.isFav) {
+        this.$message.warning('已取消收藏！');
+      } else {
+        this.showFavDialog = true;
+      }
+      this.isFav = !this.isFav;
     },
     // 点击相似题/换题
     clickSimilar() {
@@ -212,8 +225,13 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-::v-deep() {
+<style lang="scss">
+.topic-card {
+  border: 1px solid #e8e8e8;
+  border-radius: 4px;
+  margin-bottom: 16px;
+  position: relative;
+
   .el-card__body,
   .el-card__header {
     padding: 0;
@@ -222,13 +240,6 @@ export default {
   .el-card__header {
     border-bottom: 1px solid #e8e8e8;
   }
-}
-
-.topic-card {
-  border: 1px solid #e8e8e8;
-  border-radius: 4px;
-  margin-bottom: 16px;
-  position: relative;
 
   .new {
     position: absolute;

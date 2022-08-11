@@ -4,7 +4,11 @@
       <el-radio-button label="试题"></el-radio-button>
       <el-radio-button label="试卷"></el-radio-button>
     </el-radio-group>
-    <el-input v-model="searchVal" :placeholder="placeholderText">
+    <el-input
+      v-model="searchVal"
+      :placeholder="placeholderText"
+      @keydown.native.enter="search"
+    >
       <el-button @click="search" slot="append"></el-button>
     </el-input>
   </div>

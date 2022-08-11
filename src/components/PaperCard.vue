@@ -49,7 +49,7 @@
           >划题标注</el-button
         >
         <el-button v-if="showFav" @click="favPaper" type="text">{{
-          data.fav ? '已收藏' : '收藏'
+          isFav ? '已收藏' : '收藏'
         }}</el-button>
         <el-button v-if="showAnalyse" @click="analysePaper" type="text"
           >试卷分析</el-button
@@ -59,13 +59,19 @@
         >
       </el-button-group>
     </div>
+    <topic-fav v-model="showFavDialog"></topic-fav>
   </el-card>
 </template>
 
 <script>
-// 题目内容、答案、解析都是富文本
+// TODO: 图标；按钮循环出来，数据外面传进；试卷分析、下载弹窗
+import TopicFav from '@/components/TopicFav.vue';
+
 export default {
   name: 'PaperCard',
+  components: {
+    TopicFav
+  },
   props: {
     // 试卷数据
     data: Object,
@@ -87,7 +93,9 @@ export default {
       showDownload: this.btns.includes('d'),
       showEdit: this.btns.includes('t'),
       showCopy: this.btns.includes('c'),
-      showShare: this.btns.includes('s')
+      showShare: this.btns.includes('s'),
+      isFav: this.data.fav,
+      showFavDialog: false
     };
   },
   computed: {
@@ -96,6 +104,7 @@ export default {
       const [y, m, d] = this.data.update_time.split('-');
       return new Date(+y, m - 1, +d + 3) > new Date();
     },
+    // 水波球颜色变化
     ballColor() {
       return {
         simple: this.data.level === '简单',
@@ -119,7 +128,12 @@ export default {
       console.log('唤出分享弹框');
     },
     favPaper() {
-      console.log('唤出收藏弹窗');
+      if (this.isFav) {
+        this.$message.warning('已取消收藏！');
+      } else {
+        this.showFavDialog = true;
+      }
+      this.isFav = !this.isFav;
     },
     analysePaper() {
       console.log('唤出试卷分析弹窗');
@@ -137,8 +151,11 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-::v-deep() {
+<style lang="scss">
+.paper-card {
+  margin-bottom: 16px;
+  position: relative;
+
   .el-card__body,
   .el-card__header {
     padding: 0;
@@ -147,11 +164,6 @@ export default {
   .el-card__header {
     border-bottom: 1px solid #e8e8e8;
   }
-}
-
-.paper-card {
-  margin-bottom: 16px;
-  position: relative;
 
   .new {
     position: absolute;

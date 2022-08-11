@@ -5,7 +5,7 @@
       :key="item.id"
       :data="item"
       :idx="index + 1"
-      :btns="['e','d','x','f', 's', 'a', 'b']"
+      :btns="['e', 'd', 'x', 'f', 's', 'a', 'b']"
       @open-similar="openSimilar"
       @open-basket="openBasket"
       @open-rewrite="openRewrite"
@@ -41,8 +41,9 @@ export default {
           shared: true,
           my_resources: true,
           answer: ['B'],
-          hint: '解析',
-          update_time: '2022-8-2',
+          update_time: '2022-8-11',
+          hint: '<strong>富文本解析</strong>',
+          content: '<p><strong>富文本</strong>题目</p>',
           points: [
             { id: 1, name: '用科学计数法表示绝对值大于10的数' },
             { id: 2, name: '实际问题与一元二次方程' },
@@ -65,7 +66,8 @@ export default {
           my_resources: true,
           update_time: '2022-7-28',
           answer: ['B', 'A'],
-          hint: '解析',
+          hint: '<strong>富文本解析</strong>',
+          content: '<p><strong>富文本</strong>题目</p>',
           points: [
             { id: 1, name: '垂线的认识' },
             { id: 2, name: '全等三角形的性质' }

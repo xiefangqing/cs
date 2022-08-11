@@ -1,13 +1,17 @@
 <template>
-  <el-card class="condition-group" shadow="never" :body-style="bodyStyle">
+  <el-card
+    :class="['condition-group', { plain }]"
+    shadow="never"
+    :body-style="bodyStyle"
+  >
     <div class="group" v-for="group in data" :key="group.name">
       <span class="group-name">{{ group.name }}</span>
-      <template v-if="group.isTag">
+      <template v-if="group.isTag && group.name === '来源'">
         <el-button type="primary" icon="el-icon-plus" @click="addPoint"
           >添加</el-button
         >
         <el-tag
-          v-for="tag in group.options2"
+          v-for="tag in group.options"
           :key="tag.key"
           closable
           disable-transitions
@@ -17,6 +21,34 @@
           {{ tag.value }}
         </el-tag>
       </template>
+      <template v-else-if="group.name === '更多'">
+        <div class="select-box">
+          <template v-for="item in group.options">
+            <span>{{ item.name }}</span>
+            <el-select v-model="item.selectVal" @change="handleRegionChange">
+              <el-option
+                v-for="item in item.options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              >
+              </el-option>
+            </el-select>
+          </template>
+        </div>
+      </template>
+      <template v-else-if="group.name === '过滤'">
+        <el-checkbox-group
+          v-model="group.checkboxVal"
+          @change="handleFilterChange"
+        >
+          <el-checkbox
+            v-for="option in group.options"
+            :key="option.key"
+            :label="option.value"
+          ></el-checkbox>
+        </el-checkbox-group>
+      </template>
       <el-radio-group v-else v-model="group.radio" @change="handleRadioChange">
         <el-radio
           v-for="option in group.options"
@@ -25,40 +57,6 @@
           >{{ option.value }}</el-radio
         >
       </el-radio-group>
-    </div>
-    <div class="group">
-      <span class="group-name">更多</span>
-      <div class="select-box">
-        <span>地区</span>
-        <el-select v-model="regionVal" @change="handleRegionChange">
-          <el-option
-            v-for="item in options1"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          >
-          </el-option>
-        </el-select>
-        <span>年份</span>
-        <el-select v-model="yearVal" @change="handleYearChange">
-          <el-option
-            v-for="item in options2"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          >
-          </el-option>
-        </el-select>
-      </div>
-    </div>
-    <div class="group">
-      <span class="group-name">过滤</span>
-      <el-checkbox-group v-model="filterList" @change="handleFilterChange">
-        <el-checkbox label="我已组卷"></el-checkbox>
-        <el-checkbox label="本年级已组卷"></el-checkbox>
-        <el-checkbox label="我已布置作业"></el-checkbox>
-        <el-checkbox label="本年级已布置作业"></el-checkbox>
-      </el-checkbox-group>
     </div>
   </el-card>
 </template>
@@ -76,42 +74,16 @@ export default {
         };
       }
     },
-    // 条件数据
-    data: Array,
-    // 显示更多
-    showMore: {
+    // 朴素样式
+    plain: {
       type: Boolean,
-      default: true
-    }
+      default: false
+    },
+    // 条件数据
+    data: Array
   },
   data() {
-    return {
-      // radio1: 0,
-      // radio2: 0
-      options1: [
-        {
-          value: '选项1',
-          label: '黄金糕'
-        },
-        {
-          value: '选项2',
-          label: '双皮奶'
-        }
-      ],
-      options2: [
-        {
-          value: '选项1',
-          label: '黄金糕'
-        },
-        {
-          value: '选项2',
-          label: '双皮奶'
-        }
-      ],
-      regionVal: '全部',
-      yearVal: '全部',
-      filterList: []
-    };
+    return {};
   },
   methods: {
     handleRadioChange(val) {
@@ -141,6 +113,29 @@ export default {
   color: #333;
   font-size: 14px;
   border-radius: 4px;
+
+  &.plain {
+    .group {
+      margin-left: 12px;
+      &-name {
+        color: #333;
+        position: relative;
+        &::before {
+          content: '*';
+          width: 8px;
+          height: 20px;
+          position: absolute;
+          top: 0;
+          left: -12px;
+          color: #ff5353;
+        }
+      }
+    }
+    .el-radio__input.is-checked + .el-radio__label {
+      color: #333;
+    }
+  }
+
   .group {
     margin-bottom: 16px;
     &-name {
@@ -148,7 +143,7 @@ export default {
       margin-right: 40px;
     }
     &:last-of-type {
-      margin: 0;
+      margin-bottom: 0;
     }
   }
   .el-button,
@@ -196,7 +191,7 @@ export default {
     }
   }
 
-  .el-radio {
+  &:not(.plain) .el-radio {
     color: #333;
     padding: 6px 10px;
     margin-right: 12px;
@@ -217,6 +212,7 @@ export default {
       padding: 0;
     }
   }
+
   .select-box {
     display: inline-block;
     > span {
@@ -248,6 +244,7 @@ export default {
       }
     }
   }
+
   .el-checkbox-group {
     display: inline-block;
     .el-checkbox {

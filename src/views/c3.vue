@@ -1,7 +1,7 @@
 <template>
   <div class="c3">
     <button @click="dialogVisible = true">打开题目预览</button>
-    <topic-preview :show.sync="dialogVisible" :data="previewData" />
+    <topic-preview v-model="dialogVisible" :data="previewData"></topic-preview>
   </div>
 </template>
 
@@ -15,7 +15,7 @@ export default {
   },
   data() {
     return {
-      dialogVisible: false,
+      dialogVisible: true,
       previewData: {}
     };
   },
@@ -187,18 +187,18 @@ export default {
     this.previewData = data;
   },
   methods: {
-    // 树形转扁平
-    treeToList(tree, level = 0) {
-      let res = [];
-      for (const item of tree) {
-        const { questions, ...i } = item;
-        if (questions && questions.length) {
-          res = res.concat(this.treeToList(questions, level + 1));
-        }
-        res.push({ ...i, level });
-      }
-      return res;
-    }
+    // TODO: 树形转扁平实现尝试
+    // treeToList(tree, level = 0) {
+    //   let res = [];
+    //   for (const item of tree) {
+    //     const { questions, ...i } = item;
+    //     if (questions && questions.length) {
+    //       res = res.concat(this.treeToList(questions, level + 1));
+    //     }
+    //     res.push({ ...i, level });
+    //   }
+    //   return res;
+    // }
   }
 };
 </script>

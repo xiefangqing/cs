@@ -2,24 +2,24 @@
   <el-dialog
     title="题目预览"
     :visible.sync="dialogVisible"
-    @close="closeDialog"
+    custom-class="preveiw-dialog"
   >
     <div class="problem">
-      <div>{{ data.struct_question.content }}</div>
+      <div v-html="data.struct_question.content"></div>
       <div
         style="margin-left: 30px"
         v-for="(item, index) in data.struct_question.questions"
         :key="index"
       >
         <span class="answer-order">({{ index + 1 }})</span>
-        <span class="answer-content">{{ item.content }}</span>
+        <span class="answer-content" v-html="item.content"></span>
         <div
           style="margin-left: 30px"
           v-for="(item2, index2) in item.questions"
           :key="index2"
         >
           <span class="answer-order circle">{{ index2 + 1 }}</span>
-          <span class="answer-content">{{ item2.content }}</span>
+          <span class="answer-content" v-html="item2.content"></span>
         </div>
       </div>
     </div>
@@ -31,21 +31,24 @@
           :key="index"
         >
           <span class="answer-order">({{ index + 1 }})</span>
-          <span class="answer-content">{{ getAnswer(item.answers) }}</span>
+          <span class="answer-content" v-html="getAnswer(item.answers)"></span>
           <div
             style="margin-left: 30px"
             v-for="(item2, index2) in item.questions"
             :key="index2"
           >
             <span class="answer-order circle">{{ index2 + 1 }}</span>
-            <span class="answer-content">{{ getAnswer(item2.answers) }}</span>
+            <span
+              class="answer-content"
+              v-html="getAnswer(item2.answers)"
+            ></span>
           </div>
         </div>
       </div>
     </div>
     <div class="analyse">
       <div class="label">解析</div>
-      <div class="hint">{{ data.struct_question.hint }}</div>
+      <div class="hint" v-html="data.struct_question.hint"></div>
     </div>
     <div class="point">
       <div class="label">知识点</div>
@@ -58,36 +61,41 @@
         >
       </div>
     </div>
-    <span slot="footer" class="dialog-footer">
-      <el-button @click="closeDialog">取消</el-button>
-      <el-button type="primary" @click="closeDialog">确定</el-button>
-    </span>
+    <template #footer>
+      <el-button @click="dialogVisible = false">取消</el-button>
+      <el-button type="primary" @click="dialogVisible = false">确定</el-button>
+    </template>
   </el-dialog>
 </template>
 
 <script>
-// TODO：等富文本解析做好了，content、answer_res字段渲染用v-html
 export default {
   name: 'TopicPreview',
+  model: {
+    prop: 'show',
+    event: 'dialog-visible'
+  },
   props: {
+    // 预览数据
     data: Object,
-    show: Boolean
+    // 控制dialog显示隐藏
+    show: {
+      type: Boolean,
+      default: false
+    }
   },
-  data() {
-    return {
-      dialogVisible: this.show
-    };
-  },
-  watch: {
-    show(newVal) {
-      this.dialogVisible = newVal;
+  computed: {
+    dialogVisible: {
+      get() {
+        return this.show;
+      },
+      set(val) {
+        this.$emit('dialog-visible', val);
+      }
     }
   },
   methods: {
-    closeDialog() {
-      this.dialogVisible = false;
-      this.$emit('update:show', false);
-    },
+    // 根据答案类型返回
     getAnswer(answers) {
       if (!answers.length) return;
       const { answer_type, answer_res } = answers[0];
@@ -95,7 +103,7 @@ export default {
       if (answer_type === 3) {
         return answer_res[0] === '1' ? '√' : 'X';
       } else if ([4, 5].includes(answer_type)) {
-        return `答案：${answer_res[0]}`;
+        return answer_res[0];
       } else {
         return answer_res.join('');
       }
@@ -104,12 +112,12 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-::v-deep() .el-dialog {
+<style lang="scss">
+.preveiw-dialog {
   width: 920px;
-  border-radius: 6px 6px 6px 6px;
+  border-radius: 6px;
 
-  &__header {
+  .el-dialog__header {
     padding: 16px 30px 0;
 
     .el-dialog__title {
@@ -128,7 +136,7 @@ export default {
     }
   }
 
-  &__body {
+  .el-dialog__body {
     max-height: 550px;
     border: 1px solid #cecece;
     border-radius: 6px 6px 0 0;
@@ -195,11 +203,11 @@ export default {
     }
   }
 
-  &__footer {
+  .el-dialog__footer {
     border-top: 1px solid #e8e8e8;
     padding: 16px 19px;
 
-    .dialog-footer > button {
+    > button {
       width: 58px;
       height: 32px;
       padding: 0;
