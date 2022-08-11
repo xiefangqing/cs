@@ -25,7 +25,7 @@
         <div class="select-box">
           <template v-for="item in group.options">
             <span>{{ item.name }}</span>
-            <el-select v-model="item.selectVal" @change="handleRegionChange">
+            <el-select v-model="item.selectVal" @change="handleConditionChange">
               <el-option
                 v-for="item in item.options"
                 :key="item.value"
@@ -40,7 +40,7 @@
       <template v-else-if="group.name === '过滤'">
         <el-checkbox-group
           v-model="group.checkboxVal"
-          @change="handleFilterChange"
+          @change="handleConditionChange"
         >
           <el-checkbox
             v-for="option in group.options"
@@ -49,7 +49,11 @@
           ></el-checkbox>
         </el-checkbox-group>
       </template>
-      <el-radio-group v-else v-model="group.radio" @change="handleRadioChange">
+      <el-radio-group
+        v-else
+        v-model="group.radio"
+        @change="handleConditionChange"
+      >
         <el-radio
           v-for="option in group.options"
           :key="option.key"
@@ -58,12 +62,22 @@
         >
       </el-radio-group>
     </div>
+    <topic-fav
+      v-model="showFavDialog"
+      title="来源"
+      :data="sourceData"
+    ></topic-fav>
   </el-card>
 </template>
 
 <script>
+import TopicFav from '@/components/TopicFav.vue';
+
 export default {
   name: 'ConditionGroup',
+  components: {
+    TopicFav
+  },
   props: {
     // 设置 el-card__body 的样式
     bodyStyle: {
@@ -83,23 +97,20 @@ export default {
     data: Array
   },
   data() {
-    return {};
+    return {
+      showFavDialog: false,
+      sourceData: []
+    };
   },
   methods: {
-    handleRadioChange(val) {
-      console.log(val);
-    },
-    handleRegionChange(val) {
-      console.log(val);
-    },
-    handleYearChange(val) {
-      console.log(val);
-    },
-    handleFilterChange(val) {
-      console.log(val);
+    handleConditionChange(val) {
+      this.$emit('condition-change', {
+        cur: val,
+        all: this.data
+      });
     },
     addPoint() {
-      console.log('弹出知识点弹窗！');
+      this.showFavDialog = true;
     },
     closePoint(tag) {
       console.log('移除：', tag.value);

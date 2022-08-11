@@ -17,6 +17,7 @@
         </div>
       </div>
       <el-input v-model="topics.stem" placeholder="请输入内容"></el-input>
+      <!-- <editor></editor> -->
     </template>
     <div
       v-for="(twoTopic, index) in topics.children"
@@ -399,8 +400,13 @@
 
 <script>
 // TODO: 把作答方式和答案再做成组件
+// import Editor from '@/components/Editor.vue'
+
 export default {
   name: 'TopicTree',
+  components: {
+    // Editor
+  },
   data() {
     return {
       topics: {

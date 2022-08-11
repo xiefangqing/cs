@@ -1,6 +1,9 @@
 <template>
   <div class="c10">
-    <condition-group v-bind="testProps"></condition-group>
+    <condition-group
+      v-bind="testProps"
+      @condition-change="conditionChange"
+    ></condition-group>
   </div>
 </template>
 
@@ -93,6 +96,11 @@ export default {
         ]
       }
     };
+  },
+  methods: {
+    conditionChange(val) {
+      console.log(val);
+    }
   }
 };
 </script>
